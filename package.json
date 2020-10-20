@@ -17,7 +17,10 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": ["react-app", "airbnb"],
+    "rules": {
+      "react/jsx-filename-extension": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -39,13 +42,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npx lint-staged"
     }
   },
   "lint-staged": {
-    "./src/*.{js,jsx,ts,tsx}": [
-      "npx prettier --write",
-      "eslint src/*.js --fix-dry-run"
+    "src/**/*.{js, jsx}": [
+      "eslint --fix-dry-run"
     ]
   }
 }
