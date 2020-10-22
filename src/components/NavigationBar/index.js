@@ -52,8 +52,12 @@ export default function NavigationBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose} component={Link} to={ROUTES.PROFILE}>
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose} component={Link} to={ROUTES.ACCOUNT}>
+        My account
+      </MenuItem>
     </Menu>
   );
 
@@ -102,8 +106,15 @@ export default function NavigationBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+          <Typography
+            className={classes.title}
+            variant="h6"
+            noWrap
+            color="secondary"
+            component={Link}
+            to={ROUTES.HOME}
+          >
+            Boilerplate React + Firebase
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

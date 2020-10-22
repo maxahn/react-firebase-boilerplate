@@ -12,6 +12,7 @@ const useNavigationBarStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
+    textDecoration: 'none',
   },
   sectionDesktop: {
     display: 'none',

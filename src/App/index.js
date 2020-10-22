@@ -10,18 +10,19 @@ import { HomePage } from '../scenes/Home';
 import { LoginPage } from '../scenes/Login';
 import { SignUpPage } from '../scenes/SignUp';
 import { AccountPage } from '../scenes/Account';
+import { ProfilePage } from '../scenes/Profile';
 
 const App = () => (
   <ThemeProvider theme={theme}>
     <Router>
       <div>
         <NavigationBar />
-        <h1>Boilerplate React and Firebase App</h1>
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
         <Route path={ROUTES.HOME} component={HomePage} />
         <Route path={ROUTES.SIGNUP} component={SignUpPage} />
         <Route path={ROUTES.LOGIN} component={LoginPage} />
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+        <Route path={ROUTES.PROFILE} component={ProfilePage} />
       </div>
     </Router>
   </ThemeProvider>
