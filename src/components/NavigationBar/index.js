@@ -120,7 +120,7 @@ export default function NavigationBar() {
           <div className={classes.sectionDesktop}>
             <Button
               color="inherit"
-              className={classes.loginButton}
+              className={classes.menuButton}
               component={Link}
               to={ROUTES.SIGNUP}
             >
@@ -128,11 +128,11 @@ export default function NavigationBar() {
             </Button>
             <Button
               color="inherit"
-              className={classes.loginButton}
+              className={classes.menuButton}
               component={Link}
-              to={ROUTES.LOGIN}
+              to={ROUTES.SIGNIN}
             >
-              Login
+              Sign In
             </Button>
             <IconButton aria-label={`show ${0} new notifications`} color="inherit">
               <Badge badgeContent={0} color="secondary">
