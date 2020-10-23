@@ -8,7 +8,7 @@ import * as ROUTES from '../constants/routes';
 import LandingPage from '../scenes/LandingPage';
 import { HomePage } from '../scenes/Home';
 import { LoginPage } from '../scenes/Login';
-import { SignUpPage } from '../scenes/SignUp';
+import SignUp from '../scenes/SignUp';
 import { AccountPage } from '../scenes/Account';
 import { ProfilePage } from '../scenes/Profile';
 
@@ -19,7 +19,7 @@ const App = () => (
         <NavigationBar />
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
         <Route path={ROUTES.HOME} component={HomePage} />
-        <Route path={ROUTES.SIGNUP} component={SignUpPage} />
+        <Route path={ROUTES.SIGNUP} component={SignUp} />
         <Route path={ROUTES.LOGIN} component={LoginPage} />
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.PROFILE} component={ProfilePage} />
