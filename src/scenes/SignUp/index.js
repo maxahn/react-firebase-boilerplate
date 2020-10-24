@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as RouterLink } from 'react-router-dom';
+import Firebase, { FirebaseContext } from '../../services/Firebase';
 import * as ROUTES from '../../constants/routes';
 
 function Copyright() {
@@ -47,8 +49,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp({ firebase }) {
   const classes = useStyles();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    // console.log({ doCreateUserWithEmailAndPassword });
+    firebase.doCreateUserWithEmailAndPassword(email, password).then(() => {
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setError(null);
+    }).catch((submitError) => {
+      setError(submitError);
+    });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,7 +81,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={onSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -72,6 +93,8 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={({ target }) => setFirstName(target.value)}
+                value={firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -83,6 +106,8 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={({ target }) => setLastName(target.value)}
+                value={lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,6 +119,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={({ target }) => setEmail(target.value)}
+                value={email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -106,7 +133,12 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={({ target }) => setPassword(target.value)}
+                value={password}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="caption">{(!error) ? ' ' : error.message}</Typography>
             </Grid>
           </Grid>
           <Button
@@ -132,3 +164,15 @@ export default function SignUp() {
     </Container>
   );
 }
+
+SignUp.propTypes = {
+  firebase: PropTypes.instanceOf(Firebase).isRequired,
+};
+
+const SignUpPage = () => (
+  <FirebaseContext.Consumer>
+    {(firebase) => (<SignUp firebase={firebase} />)}
+  </FirebaseContext.Consumer>
+);
+
+export { SignUpPage };
