@@ -211,7 +211,14 @@ export default function SignUp({ firebase }) {
               </Grid>
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" className={classes.submit}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            className={classes.submit}
+            color="primary"
+            disabled={errors.firstName || errors.lastName || errors.email || errors.password}
+          >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
