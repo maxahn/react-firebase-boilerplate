@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -47,28 +48,29 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  errorMessage: {
+    color: theme.palette.error,
+  },
 }));
 
 export default function SignUp({ firebase }) {
   const classes = useStyles();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { handleSubmit, register, errors } = useForm();
   const [error, setError] = useState(null);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    // console.log({ doCreateUserWithEmailAndPassword });
-    firebase.doCreateUserWithEmailAndPassword(email, password).then(() => {
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setPassword('');
-      setError(null);
-    }).catch((submitError) => {
-      setError(submitError);
-    });
+  const onSubmit = (values) => {
+    const {
+      firstName, lastName, email, password,
+    } = values;
+    firebase
+      .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
+      .then(() => {
+        // TODO: redirect
+      })
+      .catch((err) => {
+        // TODO: implement flash message system
+        setError(err);
+      });
   };
 
   return (
@@ -81,72 +83,135 @@ export default function SignUp({ firebase }) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                onChange={({ target }) => setFirstName(target.value)}
-                value={firstName}
-              />
+            <Grid item xs={12}>
+              <Typography color="error" variant="caption">
+                {error && error.message}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                onChange={({ target }) => setLastName(target.value)}
-                value={lastName}
-              />
+              <Grid container direction="column" spacing={1}>
+                <Grid item>
+                  <Typography color="error" variant="caption">
+                    {errors.firstName && errors.firstName.message}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    autoComplete="fname"
+                    name="firstName"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                    error={errors.firstName}
+                    inputRef={register({
+                      required: true,
+                      reValidateMode: 'onChange',
+                      minLength: 1,
+                      pattern: {
+                        value: /^[a-zA-Z]+$/,
+                        message: 'No invalid characters or numbers',
+                      },
+                    })}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid container direction="column" spacing={1}>
+                <Grid item>
+                  <Typography color="error" variant="caption">
+                    {errors.lastName && errors.lastName.message}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="lname"
+                    error={errors.lastName}
+                    inputRef={register({
+                      required: true,
+                      reValidateMode: 'onChange',
+                      minLength: 1,
+                      pattern: {
+                        value: /^[a-zA-Z]+$/,
+                        message: 'No invalid characters or numbers',
+                      },
+                    })}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={({ target }) => setEmail(target.value)}
-                value={email}
-              />
+              <Grid container direction="column" spacing={1}>
+                <Grid item>
+                  <Typography color="error" variant="caption">
+                    {errors.email && errors.email.message}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    error={errors.email}
+                    inputRef={register({
+                      required: 'Required',
+                      reValidateMode: 'onChange',
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: 'Invalid email address',
+                      },
+                    })}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={({ target }) => setPassword(target.value)}
-                value={password}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="caption">{(!error) ? ' ' : error.message}</Typography>
+              <Grid container direction="column" spacing={1}>
+                <Grid item>
+                  <Typography color="error" variant="caption">
+                    {errors.password && errors.password.message}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    error={errors.password}
+                    autoComplete="current-password"
+                    inputRef={register({
+                      required: 'Required',
+                      reValidateMode: 'onChange',
+                      minLength: {
+                        value: 6,
+                        message: 'Minimum 6 characters',
+                      },
+                    })}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-          >
+          <Button type="submit" fullWidth variant="contained" className={classes.submit}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
@@ -171,7 +236,7 @@ SignUp.propTypes = {
 
 const SignUpPage = () => (
   <FirebaseContext.Consumer>
-    {(firebase) => (<SignUp firebase={firebase} />)}
+    {(firebase) => <SignUp firebase={firebase} />}
   </FirebaseContext.Consumer>
 );
 
