@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
 import Firebase, { withFirebase } from '../../services/Firebase';
 import * as ROUTES from '../../constants/routes';
 
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUpFormBase({ firebase }) {
+export default function SignUpFormBase({ firebase, history }) {
   const classes = useStyles();
   const { handleSubmit, register, errors } = useForm();
   const [error, setError] = useState(null);
@@ -69,6 +69,7 @@ export default function SignUpFormBase({ firebase }) {
       .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
       .then(() => {
         // TODO: redirect
+        history.push(ROUTES.HOME);
       })
       .catch((err) => {
         // TODO: implement flash message system
@@ -244,9 +245,10 @@ export default function SignUpFormBase({ firebase }) {
 
 SignUpFormBase.propTypes = {
   firebase: PropTypes.instanceOf(Firebase).isRequired,
+  history: PropTypes.string.isRequired,
 };
 
-const SignUpForm = withFirebase(SignUpFormBase);
+const SignUpForm = withRouter(withFirebase(SignUpFormBase));
 const SignUpPage = () => (
   <div>
     <h1>Sign Up</h1>
