@@ -66,6 +66,7 @@ export default function SignUp({ firebase }) {
       .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
       .then(() => {
         // TODO: redirect
+        console.log({ errors });
       })
       .catch((err) => {
         // TODO: implement flash message system
@@ -109,7 +110,7 @@ export default function SignUp({ firebase }) {
                     autoFocus
                     error={errors.firstName}
                     inputRef={register({
-                      required: true,
+                      required: 'Required',
                       reValidateMode: 'onChange',
                       minLength: 1,
                       pattern: {
@@ -139,7 +140,7 @@ export default function SignUp({ firebase }) {
                     autoComplete="lname"
                     error={errors.lastName}
                     inputRef={register({
-                      required: true,
+                      required: 'Required',
                       reValidateMode: 'onChange',
                       minLength: 1,
                       pattern: {
@@ -221,7 +222,7 @@ export default function SignUp({ firebase }) {
           >
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container alignItems="flex-end">
             <Grid item>
               <Link component={RouterLink} to={ROUTES.SIGNIN} variant="body2">
                 Already have an account? Sign in
