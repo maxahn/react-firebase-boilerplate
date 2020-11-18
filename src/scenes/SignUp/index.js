@@ -57,6 +57,9 @@ export default function SignUp({ firebase }) {
   const classes = useStyles();
   const { handleSubmit, register, errors } = useForm();
   const [error, setError] = useState(null);
+  const isDisabled = Boolean(
+    errors.firstName || errors.lastName || errors.email || errors.password,
+  );
 
   const onSubmit = (values) => {
     const {
@@ -66,7 +69,6 @@ export default function SignUp({ firebase }) {
       .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
       .then(() => {
         // TODO: redirect
-        console.log({ errors });
       })
       .catch((err) => {
         // TODO: implement flash message system
@@ -109,7 +111,7 @@ export default function SignUp({ firebase }) {
                     id="firstName"
                     label="First Name"
                     autoFocus
-                    error={errors.firstName}
+                    error={Boolean(errors.firstName)}
                     inputRef={register({
                       required: 'Required',
                       reValidateMode: 'onChange',
@@ -140,7 +142,7 @@ export default function SignUp({ firebase }) {
                     label="Last Name"
                     name="lastName"
                     autoComplete="lname"
-                    error={errors.lastName}
+                    error={Boolean(errors.lastName)}
                     inputRef={register({
                       required: 'Required',
                       reValidateMode: 'onChange',
@@ -170,7 +172,7 @@ export default function SignUp({ firebase }) {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
-                    error={errors.email}
+                    error={Boolean(errors.email)}
                     inputRef={register({
                       required: 'Required',
                       reValidateMode: 'onChange',
@@ -199,7 +201,7 @@ export default function SignUp({ firebase }) {
                     label="Password"
                     type="password"
                     id="password"
-                    error={errors.password}
+                    error={Boolean(errors.password)}
                     autoComplete="current-password"
                     inputRef={register({
                       required: 'Required',
@@ -220,7 +222,7 @@ export default function SignUp({ firebase }) {
             variant="contained"
             className={classes.submit}
             color="primary"
-            disabled={errors.firstName || errors.lastName || errors.email || errors.password}
+            disabled={isDisabled}
           >
             Sign Up
           </Button>
