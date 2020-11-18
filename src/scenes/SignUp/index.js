@@ -96,6 +96,7 @@ export default function SignUp({ firebase }) {
                 <Grid item>
                   <Typography color="error" variant="caption">
                     {errors.firstName && errors.firstName.message}
+                    {errors.lastName && ' ‏‏‎ '}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -126,6 +127,7 @@ export default function SignUp({ firebase }) {
               <Grid container direction="column" spacing={1}>
                 <Grid item>
                   <Typography color="error" variant="caption">
+                    {errors.firstName && ' ‏‏‎ '}
                     {errors.lastName && errors.lastName.message}
                   </Typography>
                 </Grid>
