@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as RouterLink } from 'react-router-dom';
-import Firebase, { FirebaseContext } from '../../services/Firebase';
+import Firebase, { withFirebase } from '../../services/Firebase';
 import * as ROUTES from '../../constants/routes';
 
 function Copyright() {
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp({ firebase }) {
+export default function SignUpFormBase({ firebase }) {
   const classes = useStyles();
   const { handleSubmit, register, errors } = useForm();
   const [error, setError] = useState(null);
@@ -242,14 +242,15 @@ export default function SignUp({ firebase }) {
   );
 }
 
-SignUp.propTypes = {
+SignUpFormBase.propTypes = {
   firebase: PropTypes.instanceOf(Firebase).isRequired,
 };
 
+const SignUpForm = withFirebase(SignUpFormBase);
 const SignUpPage = () => (
-  <FirebaseContext.Consumer>
-    {(firebase) => <SignUp firebase={firebase} />}
-  </FirebaseContext.Consumer>
+  <div>
+    <h1>Sign Up</h1>
+    <SignUpForm />
+  </div>
 );
-
 export { SignUpPage };
