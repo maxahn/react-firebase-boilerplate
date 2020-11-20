@@ -14,7 +14,8 @@
     "react-dom": "^16.14.0",
     "react-hook-form": "^6.9.6",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "recompose": "^0.30.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -29,7 +30,7 @@
     ],
     "rules": {
       "react/jsx-filename-extension": "off",
-      "react/jsx-props-no-spreading": "off" 
+      "react/jsx-props-no-spreading": "off"
     }
   },
   "browserslist": {

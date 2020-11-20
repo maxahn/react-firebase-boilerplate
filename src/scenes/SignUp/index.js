@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 import Firebase, { withFirebase } from '../../services/Firebase';
 import * as ROUTES from '../../constants/routes';
 
@@ -69,7 +70,6 @@ export default function SignUpFormBase({ firebase, history }) {
       .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
       .then(() => {
         // TODO: redirect
-        console.log({ history });
         history.push(ROUTES.HOME);
       })
       .catch((err) => {
@@ -251,7 +251,7 @@ SignUpFormBase.propTypes = {
   }).isRequired,
 };
 
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 
 const SignUpPage = () => (
   <div>
