@@ -259,4 +259,5 @@ const SignUpPage = () => (
     <SignUpForm />
   </div>
 );
+
 export { SignUpPage };

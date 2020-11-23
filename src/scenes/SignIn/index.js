@@ -1,4 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { withRouter, Link as RouterLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +15,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Link as RouterLink } from 'react-router-dom';
+
+import Firebase, { withFirebase } from '../../services/Firebase';
 import * as ROUTES from '../../constants/routes';
 
 function Copyright() {
@@ -49,9 +53,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignInFormBase({ firebase }) {
   const classes = useStyles();
+  const [error, setError] = useState(null);
+  const { handleSubmit, register, errors } = useForm();
 
+  const onSubmit = (values) => {
+    const { email, password } = values;
+    firebase
+      .doSignInWithEmailAndPassword(email, password)
+      .then(() => {
+        // TODO: redirect to home
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  };
+
+  const isDisabled = Boolean(errors.email || errors.password);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -62,51 +81,90 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link component={RouterLink} to={ROUTES.PASSWORD_FORGET} variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
             <Grid item>
-              <Link component={RouterLink} to={ROUTES.SIGNUP} variant="body2">
-                Don&apos;t have an account? Sign Up
-              </Link>
+              <Typography color="error" variant="caption">
+                {error && error.message}
+              </Typography>
+            </Grid>
+            <Grid container direction="column" spacing={1}>
+              <Grid item>
+                <Typography color="error" variant="caption">
+                  {errors.email && errors.email.message}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  error={Boolean(errors.lastName)}
+                  inputRef={register({
+                    required: 'Required',
+                    reValidateMode: 'onChange',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email address',
+                    },
+                  })}
+                />
+              </Grid>
+            </Grid>
+            <Grid container direction="column" spacing={1}>
+              <Grid item>
+                <Typography color="error" variant="caption">
+                  {errors.password && errors.email.password}
+                </Typography>
+              </Grid>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                error={Boolean(errors.password)}
+                inputRef={register({
+                  isRequired: 'Required',
+                  reValidateMode: 'onChange',
+                })}
+              />
+            </Grid>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              color="primary"
+              disabled={isDisabled}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link component={RouterLink} to={ROUTES.PASSWORD_FORGET} variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link component={RouterLink} to={ROUTES.SIGNUP} variant="body2">
+                  Don&apos;t have an account? Sign Up
+                </Link>
+              </Grid>
             </Grid>
           </Grid>
         </form>
@@ -117,3 +175,17 @@ export default function SignIn() {
     </Container>
   );
 }
+
+SignInFormBase.propTypes = {
+  firebase: PropTypes.instanceOf(Firebase).isRequired,
+};
+
+const SignInForm = withRouter(withFirebase(SignInFormBase));
+
+const SignInPage = () => (
+  <div>
+    <SignInForm />
+  </div>
+);
+
+export { SignInPage };
