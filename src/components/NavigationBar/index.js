@@ -12,9 +12,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
 import * as ROUTES from '../../constants/routes';
 import useNavigationBarStyles from './useNavigationBarStyles';
+import SignOutButton from '../../scenes/SignOut';
 
 export default function NavigationBar() {
   const classes = useNavigationBarStyles();
@@ -134,6 +134,7 @@ export default function NavigationBar() {
             >
               Sign In
             </Button>
+            <SignOutButton />
             <IconButton aria-label={`show ${0} new notifications`} color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
