@@ -15,7 +15,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import { compose } from 'recompose';
 import Firebase, { withFirebase } from '../../services/Firebase';
 import * as ROUTES from '../../constants/routes';
 
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInFormBase({ firebase }) {
+export default function SignInFormBase({ firebase, history }) {
   const classes = useStyles();
   const [error, setError] = useState(null);
   const { handleSubmit, register, errors } = useForm();
@@ -63,7 +63,7 @@ export default function SignInFormBase({ firebase }) {
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
-        // TODO: redirect to home
+        history.push(ROUTES.HOME);
       })
       .catch((err) => {
         setError(err);
@@ -178,9 +178,12 @@ export default function SignInFormBase({ firebase }) {
 
 SignInFormBase.propTypes = {
   firebase: PropTypes.instanceOf(Firebase).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-const SignInForm = withRouter(withFirebase(SignInFormBase));
+const SignInForm = compose(withRouter, withFirebase)(SignInFormBase);
 
 const SignInPage = () => (
   <div>

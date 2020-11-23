@@ -69,7 +69,6 @@ export default function SignUpFormBase({ firebase, history }) {
     firebase
       .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
       .then(() => {
-        // TODO: redirect
         history.push(ROUTES.HOME);
       })
       .catch((err) => {
@@ -255,7 +254,6 @@ const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 
 const SignUpPage = () => (
   <div>
-    <h1>Sign Up</h1>
     <SignUpForm />
   </div>
 );
