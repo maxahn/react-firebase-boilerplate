@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -16,7 +17,7 @@ import * as ROUTES from '../../constants/routes';
 import useNavigationBarStyles from './useNavigationBarStyles';
 import SignOutButton from '../../scenes/SignOut';
 
-export default function NavigationBar() {
+export default function NavigationBar({ authUser }) {
   const classes = useNavigationBarStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -118,23 +119,28 @@ export default function NavigationBar() {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button
-              color="inherit"
-              className={classes.menuButton}
-              component={Link}
-              to={ROUTES.SIGNUP}
-            >
-              Sign Up
-            </Button>
-            <Button
-              color="inherit"
-              className={classes.menuButton}
-              component={Link}
-              to={ROUTES.SIGNIN}
-            >
-              Sign In
-            </Button>
-            <SignOutButton />
+            {!authUser ? (
+              <div>
+                <Button
+                  color="inherit"
+                  className={classes.menuButton}
+                  component={Link}
+                  to={ROUTES.SIGNUP}
+                >
+                  Sign Up
+                </Button>
+                <Button
+                  color="inherit"
+                  className={classes.menuButton}
+                  component={Link}
+                  to={ROUTES.SIGNIN}
+                >
+                  Sign In
+                </Button>
+              </div>
+            ) : (
+              <SignOutButton />
+            )}
             <IconButton aria-label={`show ${0} new notifications`} color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
@@ -169,3 +175,13 @@ export default function NavigationBar() {
     </div>
   );
 }
+
+NavigationBar.propTypes = {
+  authUser: PropTypes.shape({
+    email: PropTypes.string,
+  }),
+};
+
+NavigationBar.defaultProps = {
+  authUser: null,
+};
