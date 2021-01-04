@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,11 +14,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+
+import AuthUserContext from '../../services/Session';
 import * as ROUTES from '../../constants/routes';
 import useNavigationBarStyles from './useNavigationBarStyles';
 import SignOutButton from '../../scenes/SignOut';
 
-export default function NavigationBar({ authUser }) {
+export default function NavigationBar() {
   const classes = useNavigationBarStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -95,6 +98,27 @@ export default function NavigationBar({ authUser }) {
     </Menu>
   );
 
+  const NavigationNonAuth = () => (
+    <div>
+      <Button
+        color="inherit"
+        className={classes.menuButton}
+        component={Link}
+        to={ROUTES.SIGNUP}
+      >
+        Sign Up
+      </Button>
+      <Button
+        color="inherit"
+        className={classes.menuButton}
+        component={Link}
+        to={ROUTES.SIGNIN}
+      >
+        Sign In
+      </Button>
+    </div>
+  );
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -119,28 +143,11 @@ export default function NavigationBar({ authUser }) {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {!authUser ? (
-              <div>
-                <Button
-                  color="inherit"
-                  className={classes.menuButton}
-                  component={Link}
-                  to={ROUTES.SIGNUP}
-                >
-                  Sign Up
-                </Button>
-                <Button
-                  color="inherit"
-                  className={classes.menuButton}
-                  component={Link}
-                  to={ROUTES.SIGNIN}
-                >
-                  Sign In
-                </Button>
-              </div>
-            ) : (
-              <SignOutButton />
-            )}
+            <div>
+              <AuthUserContext.Consumer>
+                {(authUser) => (!authUser ? <NavigationNonAuth /> : <SignOutButton />)}
+              </AuthUserContext.Consumer>
+            </div>
             <IconButton aria-label={`show ${0} new notifications`} color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />

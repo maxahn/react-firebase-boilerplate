@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Firebase, { withFirebase } from '../services/Firebase';
+import AuthUserContext from '../services/Session';
 import theme from '../styles/theme';
 
 import NavigationBar from '../components/NavigationBar';
@@ -35,17 +36,19 @@ class App extends Component {
     const { authUser } = this.state;
     return (
       <ThemeProvider theme={theme}>
-        <Router>
-          <div>
-            <NavigationBar authUser={authUser} />
-            <Route exact path={ROUTES.LANDING} component={LandingPage} />
-            <Route path={ROUTES.HOME} component={HomePage} />
-            <Route path={ROUTES.SIGNUP} component={SignUpPage} />
-            <Route path={ROUTES.SIGNIN} component={SignInPage} />
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route path={ROUTES.PROFILE} component={ProfilePage} />
-          </div>
-        </Router>
+        <AuthUserContext.Provider value={authUser}>
+          <Router>
+            <div>
+              <NavigationBar />
+              <Route exact path={ROUTES.LANDING} component={LandingPage} />
+              <Route path={ROUTES.HOME} component={HomePage} />
+              <Route path={ROUTES.SIGNUP} component={SignUpPage} />
+              <Route path={ROUTES.SIGNIN} component={SignInPage} />
+              <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+              <Route path={ROUTES.PROFILE} component={ProfilePage} />
+            </div>
+          </Router>
+        </AuthUserContext.Provider>
       </ThemeProvider>
     );
   }
