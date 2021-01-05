@@ -15,12 +15,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
-import AuthUserContext from '../../services/Session';
+import AuthUserContext, { withAuthentication } from '../../services/Session';
 import * as ROUTES from '../../constants/routes';
 import useNavigationBarStyles from './useNavigationBarStyles';
 import SignOutButton from '../../scenes/SignOut';
 
-export default function NavigationBar() {
+const NavigationBar = () => {
   const classes = useNavigationBarStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -145,7 +145,11 @@ export default function NavigationBar() {
           <div className={classes.sectionDesktop}>
             <div>
               <AuthUserContext.Consumer>
-                {(authUser) => (!authUser ? <NavigationNonAuth /> : <SignOutButton />)}
+                {
+                  (authUser) => (
+                    !authUser ? <NavigationNonAuth /> : <SignOutButton />
+                  )
+                }
               </AuthUserContext.Consumer>
             </div>
             <IconButton aria-label={`show ${0} new notifications`} color="inherit">
@@ -181,7 +185,7 @@ export default function NavigationBar() {
       {renderMenu}
     </div>
   );
-}
+};
 
 NavigationBar.propTypes = {
   authUser: PropTypes.shape({
@@ -192,3 +196,5 @@ NavigationBar.propTypes = {
 NavigationBar.defaultProps = {
   authUser: null,
 };
+
+export default withAuthentication(NavigationBar);
