@@ -11,6 +11,7 @@ import { SignInPage } from '../scenes/SignIn';
 import { SignUpPage } from '../scenes/SignUp';
 import { AccountPage } from '../scenes/Account';
 import { ProfilePage } from '../scenes/Profile';
+import { PasswordForgetPage } from '../scenes/PasswordForget';
 
 const App = () => (
   <ThemeProvider theme={theme}>
@@ -23,6 +24,7 @@ const App = () => (
         <Route path={ROUTES.SIGNIN} component={SignInPage} />
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.PROFILE} component={ProfilePage} />
+        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
       </div>
     </Router>
   </ThemeProvider>
