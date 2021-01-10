@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PasswordChangeFormBase({ history, firebase }) {
+function PasswordChangeFormBase({ history, firebase }) {
   const classes = useStyles();
   const [error, setError] = useState(null);
   const { handleSubmit, register, errors } = useForm();
@@ -175,4 +175,5 @@ const PasswordChangePage = () => (
   </div>
 );
 
+export default PasswordChangeForm;
 export { PasswordChangePage };

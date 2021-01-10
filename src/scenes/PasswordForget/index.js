@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PasswordForgetFormBase({ history, firebase }) {
+function PasswordForgetFormBase({ history, firebase }) {
   const classes = useStyles();
   const [error, setError] = useState(null);
   const { handleSubmit, register, errors } = useForm();
@@ -144,4 +144,5 @@ const PasswordForgetPage = () => (
   </div>
 );
 
+export default PasswordForgetForm;
 export { PasswordForgetPage };
