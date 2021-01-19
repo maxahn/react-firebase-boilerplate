@@ -68,10 +68,12 @@ export default function SignUpFormBase({ firebase, history }) {
     } = values;
     firebase
       .doCreateUserWithEmailAndPassword(email, password, firstName, lastName)
-      .then(() => {
+      .then((authUser) => {
+        return firebase.user(authUser.user.uid)
+          .set({ email });
+      }).then(() => {
         history.push(ROUTES.HOME);
-      })
-      .catch((err) => {
+      }).catch((err) => {
         // TODO: implement flash message system
         setError(err);
       });
