@@ -8,7 +8,7 @@ This is a boilerplate set up (in progress) for React and Firebase to get the bas
 
 - User Authentication and instantiation in Firebase upon sign up
 
-## Get Started
+## Setup 
 
 ### 1. Install package dependencies
 
@@ -30,3 +30,7 @@ REACT_APP_PROJECT_ID=xxxxXXXX
 REACT_APP_STORAGE_BUCKET=xxxxXXXX.appspot.com
 REACT_APP_MESSAGING_SENDER_ID=xxxxXXXX
 ```
+
+### 3. Set up Realtime Firebase
+
+This app uses Firebase's realtime database to create and store users. Intialize the database through the firebase console.
