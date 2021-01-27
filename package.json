@@ -5,6 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-navigation/native": "^5.9.2",
+    "@react-navigation/stack": "^5.14.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -13,6 +16,10 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-hook-form": "^6.9.6",
+    "react-native-gesture-handler": "^1.9.0",
+    "react-native-reanimated": "^1.13.2",
+    "react-native-safe-area-context": "^3.1.9",
+    "react-native-screens": "^2.17.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "recompose": "^0.30.0"

@@ -7,6 +7,7 @@ This is a boilerplate set up (in progress) for React and Firebase to get the bas
 ## Features
 
 - User Authentication and instantiation in Firebase upon sign up
+- Eslint and prettier set up with Husky hooks to check syntax to prevent the committing of bad code. 
 
 ## Get Started
 

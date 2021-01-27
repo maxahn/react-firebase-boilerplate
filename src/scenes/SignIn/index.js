@@ -120,7 +120,7 @@ export default function SignInFormBase({ firebase, history }) {
             <Grid container direction="column" spacing={1}>
               <Grid item>
                 <Typography color="error" variant="caption">
-                  {errors.password && errors.email.password}
+                  {errors.password && errors.password.message}
                 </Typography>
               </Grid>
               <TextField
